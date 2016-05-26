@@ -1,0 +1,2 @@
+include README.md 
+recursive-include csv2pcdmlite/sample-data *.csv 
