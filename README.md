@@ -20,4 +20,17 @@ There are some rudimentary tests.
 
 ## Describing a simple repository via a CSV file. 
 
-TODO: Document the 
+TODO: Document the CSV format.
+
+Quick notes for CSV format. 
+
+*  Put one item or collection per row. 
+*  Use these columns:
+```
+dcterms:identifier : Required, an ID unique to (at least) your data
+dcterms:type       : What kind of resource this is you could use a string or a URI. If this row describes a collection put pdcdm:Collection
+pdcm:Collection    : Optional, the ID collection that contains this object or collection, this should appear in the dcterms:identifier column elsewhere in the data file
+dcterms:*          : Any other Dublin Core Metatada
+FILE:              : Path for a file to upload
+
+```
