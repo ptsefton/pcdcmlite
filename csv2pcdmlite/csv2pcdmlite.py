@@ -15,14 +15,17 @@ from builtins import object
 
 import csv
 import copy
-from rdflib import Graph, Literal, BNode, Namespace, RDF, URIRef
+from rdflib import Graph, Literal, BNode,RDF, URIRef
 from rdflib.namespace import DC, FOAF
 import sys
-sys.path.append("../pcdmlite")
-from pcdmlite import Item
+from pcdmlite.pcdmlite import Item, Namespace
 
 def item_from_row(row):
     item = Item()
+    populate_item_from_row(item, row)
+    return item
+
+def populate_item_from_row(item, row):
     def _add_field(item, field, array):
         if field.repeats:
             for v in field.value.split(","):
@@ -62,8 +65,8 @@ def item_from_row(row):
                     item.is_collection = True
 
     for f in item.text_fields:
-       item.graph.add((Literal("<>"), URIRef(f.qualified_name), Literal(f.value)))
-    return item
+       item.graph.add((Literal("<>"), URIRef(f.URI), Literal(f.value)))
+   
 
 class Field(object):
     """Class for decoding CSV column names"""
@@ -73,6 +76,7 @@ class Field(object):
         self.namespace = Namespace("")
         self.field_name = None
         self.qualified_name = None
+        self.URI = None
         self.value = None
         self.item_type_field = "dcterms:type" #TODO add a method to change
         self.collection_field = "pcdm:Collection"
@@ -96,11 +100,13 @@ class Field(object):
                     self.type = self.RELATION
                     ns, self.field_name = name.split(":", 1)
                     self.namespace = Namespace(ns)
-                    self.qualified_name = ':'.join([ns, self.field_name])
+                    self.qualified_name = ':'.join([self.namespace.prefix, self.field_name])
+                    self.URI = ":".join([self.namespace.URI, self.field_name])  if self.URI else self.qualified_name
             else:
                 self.namespace = Namespace(ns)
                 self.field_name = name
-                self.qualified_name = ':'.join([ns, self.field_name])
+                self.qualified_name = ':'.join([self.namespace.prefix, self.field_name])
+                self.URI = ":".join([self.namespace.URI, self.field_name]) if self.namespace.URI else self.qualified_name
                 if self.qualified_name == self.item_type_field:
                     self.type = self.ITEM_TYPE
                     self.repeats = False
@@ -129,12 +135,6 @@ class CSVData(object):
             else:
                 self.items.append(item)
 
-
-       
-                  
-   
-
-   
 
             
     def serialize_RDF(self):
