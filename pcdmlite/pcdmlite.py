@@ -69,4 +69,4 @@ class Item(object):
     def serialize_RDF(self):
         # I don't understand how to get "<>" like Fedora wants
         # so HACK!  
-        return str(self.graph.serialize(format="n3")).replace('"<>"','<>')
+        return str(self.graph.serialize(format="n3"))
