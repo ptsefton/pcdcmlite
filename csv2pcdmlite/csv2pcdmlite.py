@@ -65,7 +65,7 @@ def populate_item_from_row(item, row):
                     item.is_collection = True
 
     for f in item.text_fields:
-       item.graph.add((Literal("<>"), URIRef(f.URI), Literal(f.value)))
+       item.graph.add((URIRef(""), URIRef(f.URI), Literal(f.value)))
    
 
 class Field(object):
@@ -138,6 +138,4 @@ class CSVData(object):
 
             
     def serialize_RDF(self):
-        # I don't understand how to get "<>" like Fedora wants
-        # so HACK!  
-        return self.graph.serialize(format="n3").replace('"<>"','<>')
+        return self.graph.serialize(format="n3") 
