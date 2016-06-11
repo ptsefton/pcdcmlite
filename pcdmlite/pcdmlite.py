@@ -46,13 +46,25 @@ class Namespace(object):
 
 
 class repository(object):
+    """ TODO: Keep an entire repo model in memory during ingest """
     pass
     
 
 
 
 class Item(object):
-    """(very) Abstract repository item could be a PCDM object or a file"""
+    """
+    (very) Abstract repository item could be a PCDM object or a collection. 
+    Members:
+       files: Array of paths for files to upload for this item (no extra metadata allowed yet)
+       URLs: Array of URLS for attachments to upload as PCDM files
+       text_fields: Array of csv2pcdmlite.Field objects constiuting the main metdata of the item
+       is_collection: Boolean - True: this a PCDM collection False: it is an objet
+       in_collection: ID of a collection
+       self.id: ID set by code for an item in your ingest pacakge, you may not be able to use this ID in a repository
+       self.title: Convient way to get the dcterms:title which would otherwise be encoded in a Field
+       self.Graph: RDF Graph for this object/collection
+    """
     def __init__(self):
         self.files = []
         self.URLs = []
@@ -67,6 +79,5 @@ class Item(object):
         self.graph = Graph()
         
     def serialize_RDF(self):
-        # I don't understand how to get "<>" like Fedora wants
-        # so HACK!  
+        """ Wrapper for serialize method from RDFLib """  
         return str(self.graph.serialize(format="n3"))
