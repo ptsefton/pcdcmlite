@@ -12,7 +12,6 @@ from future import standard_library
 standard_library.install_aliases()
 from builtins import range
 from builtins import object
-
 import csv
 import copy
 from rdflib import Graph, Literal, BNode,RDF, URIRef
@@ -20,6 +19,30 @@ from rdflib.namespace import DC, FOAF
 import sys
 from pcdmlite.pcdmlite import Item, Namespace
 
+class Relation(object):
+    def __init__(self):
+        self.subject = None
+        self.predicate = None
+        self.object = None
+
+def relation_from_row(row):
+    relation = Relation()
+    populate_relation_from_row(relation, row)
+    return relation
+
+def populate_relation_from_row(relation, row):
+    relation.subject = row["subject"] if "subject" in row else None
+    relation.object = row["object"] if "object" in row else None
+    relation.predicate = row["predicate"] if "predicate" in row else None
+    if relation.subject and relation.object and relation.predicate and ":" in relation.predicate:
+        prefix,rest = relation.predicate.split(":")
+        ns = Namespace(prefix)
+        if prefix != "http" and prefix != "https" and ns.prefix != relation.predicate:
+            relation.predicate = ns.URI + rest
+    else:
+        return None
+
+    
 def item_from_row(row):
     item = Item()
     populate_item_from_row(item, row)
@@ -63,6 +86,8 @@ def populate_item_from_row(item, row):
                 item.type = value
                 if value == "pcdm:Collection":
                     item.is_collection = True
+                else:
+                    item.graph.add((URIRef(""), URIRef(f.URI), Literal(f.value)))
 
     for f in item.text_fields:
        item.graph.add((URIRef(""), URIRef(f.URI), Literal(f.value)))
@@ -123,6 +148,7 @@ class CSVData(object):
         self.fields = {}
         self.items = []
         self.collections = []
+        self.relations = []
         for name in self.fieldnames:
             self.fields[name] =  Field(name)
             
@@ -134,8 +160,12 @@ class CSVData(object):
                 self.collections.append(item)
             else:
                 self.items.append(item)
-
-
+                
+    def get_relations(self):
+        for row in self._reader:
+            relation = relation_from_row(row)
+            if relation:
+                self.relations.append(relation)
             
     def serialize_RDF(self):
         return self.graph.serialize(format="n3") 

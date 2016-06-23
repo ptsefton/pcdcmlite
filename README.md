@@ -12,20 +12,24 @@ This is pre-alpha, under-documented, experimental code. It may work
 for you and we're happy to help out if you are interested in getting
 it running but it is not  production quality, yet. Raise an issue here if you have a question.
 
+This is also embarassingly simple.
+
 
 ##  Install
-1.  Get yourself into a Python Virtual environment for your project. (Really, you are going to be messing with non-production code here)
+1.  Get yourself into a Python Virtual environment for your project. TODO - how (Really, you are going to be messing with non-production code here)
 2.  Check out this repository, eg by:
   ```git clone https://github.com/ptsefton/pcdcmlite```
 3. Install it (in your Virtual Environment!):
    ```cd pcdmlite
     python setup.py install```
 
-There are some rudimentary tests. 
+There are some rudimentary tests.
 
-## Describing a simple repository via a CSV file. 
+There are two classes:
+pcdmlite: this is a essentially just a simple data structure (even simpler than PCDM)
 
-TODO: Document the CSV format.
+## Load repository data via a CSV file
+
 
 Quick notes for CSV format. 
 
@@ -41,4 +45,13 @@ dcterms:type           | What kind of resource this is. You could use a string o
 pdcm:Collection      |Optional, the ID collection that *contains* this object or collection, this should appear in the dcterms:identifier column elsewhere in the data file
 dcterms:*term*       |  Any other Dublin Core Metatada
 FILE:                       | Path for a file to upload
+
+To make relationships between existing items using a separate sheet
+you can use:
+
+Column Header        | Description
+----------------|-----------------------------------------------------------
+subject                     | Subject ID (matches a dcterms:identifier)
+predicate                  | An RDF predicate - either a URI or something with dc: frbr: or foaf: namespace (for now)
+object                       | Object ID (matching a dcterms:identifier)
 

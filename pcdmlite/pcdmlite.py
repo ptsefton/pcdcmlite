@@ -31,8 +31,8 @@ class Namespace(object):
         bibo = {"name": "BIBO", "URI": "http://purl.org/ontology/bibo/", "prefix": "bibo"}
         foaf = {"name": "FOAF", "URI": "http://xmlns.com/foaf/0.1/", "prefix": "foaf"}
         custom = {"name": "custom", "URI": "", "prefix": "custom"}
-        frbr = {"name": "FRBR", "URI": "http://purl.org/vocab/frbr/core#", "prefix": "foaf"}
-        vocabs = {"dc": dc, "dcterms": dc, "foaf": foaf, "bibo": bibo, "custom": custom, "FRBDR": frbr}
+        frbr = {"name": "FRBR", "URI": "http://purl.org/vocab/frbr/core#", "prefix": "frbr"}
+        vocabs = {"dc": dc, "dcterms": dc, "foaf": foaf, "bibo": bibo, "custom": custom, "frbr": frbr}
         self.prefix = None
         self.name = None
         self.URI = None

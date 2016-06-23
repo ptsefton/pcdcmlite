@@ -23,10 +23,9 @@ from __future__ import division
 from __future__ import absolute_import
 from builtins import open
 from future import standard_library
-standard_library.install_aliases()
 
 import unittest
-from csv2pcdmlite import Field, CSVData, item_from_row
+from csv2pcdmlite import Field, CSVData, item_from_row, relation_from_row
 
 
 class TestLoading(unittest.TestCase):
@@ -57,7 +56,19 @@ class TestLoading(unittest.TestCase):
       self.assertEqual(len(csv.items), 27)
       self.assertEqual(len(csv.collections), 2)
 
-  
+  def test_relations(self):
+      row = {'subject': '12345', 'predicate': 'dcterms:type', 'object': '34352'}
+      relation = relation_from_row(row)
+      self.assertEqual(relation.predicate, "http://purl.org/dc/terms/type")
 
+      row = {'subject': '12345', 'predicate': 'http://purl.org/dc/terms/type', 'object': '34352'}
+      relation = relation_from_row(row)
+      self.assertEqual(relation.predicate, "http://purl.org/dc/terms/type")
+      
+  def test_relations_CSV(self):
+      csv = CSVData(open('sample-data/relations.csv'))
+      csv.get_relations()
+      self.assertEqual(len(csv.relations),2)
+      
 if __name__ == '__main__':
     unittest.main()
