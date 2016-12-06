@@ -40,8 +40,8 @@ Quick notes for CSV format.
 
 Column Header        |      Description 
 ----------------|-----------------------------------------------------------
-dcterms:identifier :  | Required, an ID unique to (at least) your data. TODO: code should assign an ID to the whole spreadsheet to create a unique namespace for these IDs
-dcterms:type           | What kind of resource this is. You could use a string or a URI.  If this row describes a collection put pdcdm:Collection
+dc:identifier :  | Required, an ID unique to (at least) your data. TODO: code should assign an ID to the whole spreadsheet to create a unique namespace for these IDs
+dc:type           | What kind of resource this is. You could use a string or a URI.  If this row describes a collection put pdcdm:Collection
 pdcm:Collection      |Optional, the ID collection that *contains* this object or collection, this should appear in the dcterms:identifier column elsewhere in the data file
 dcterms:*term*       |  Any other Dublin Core Metatada
 FILE:                       | Path for a file to upload

@@ -27,12 +27,14 @@ class Namespace(object):
         TODO: Allow user to load more of these from a file"""
     
     def __init__(self, prefix):
-        dc = {"name": "Dublin Core", "URI": "http://purl.org/dc/terms/", "prefix": "dcterms"}
+        dcterms = {"name": "Dublin Core Terms", "URI": "http://purl.org/dc/terms/", "prefix": "dcterms"}
+        dc = {"name": "Dublin Core", "URI": "http://purl.org/dc/elements/1.1/", "prefix": "dc"}
+        pcdm = {"name": "Portland Common Data Model", "URI": "http://pcdm.org/models#", "prefix": "pcdm"}
         bibo = {"name": "BIBO", "URI": "http://purl.org/ontology/bibo/", "prefix": "bibo"}
         foaf = {"name": "FOAF", "URI": "http://xmlns.com/foaf/0.1/", "prefix": "foaf"}
         custom = {"name": "custom", "URI": "", "prefix": "custom"}
         frbr = {"name": "FRBR", "URI": "http://purl.org/vocab/frbr/core#", "prefix": "frbr"}
-        vocabs = {"dc": dc, "dcterms": dc, "foaf": foaf, "bibo": bibo, "custom": custom, "frbr": frbr}
+        vocabs = {"dc": dc, "dcterms": dc, "foaf": foaf, "bibo": bibo, "custom": custom, "frbr": frbr, "pcdm": pcdm}
         self.prefix = None
         self.name = None
         self.URI = None

@@ -3,7 +3,7 @@
 
 This file is part of pcdmlite.
 
-    Netta is free software: you can redistribute it and/or modify
+    Pddmlite is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -34,7 +34,7 @@ class TestLoading(unittest.TestCase):
       f = Field("dc:identifier")
       self.assertEqual(f.type, Field.TEXT)
      
-      f = Field("dcterms:type")
+      f = Field("dc:type")
       self.assertEqual(f.type, Field.ITEM_TYPE)
 
       f = Field("pcdm:Collection")
@@ -45,9 +45,11 @@ class TestLoading(unittest.TestCase):
       self.assertTrue(f.repeats)
 
   def test_row_loading(self):
-      row = {'dc:title': 'People', 'dcterms:type': 'pcdm:Collection'}
+      row = {'dc:title': 'People', 'dc:type': 'pcdm:Collection', 'dc:identifier': '123'}
       item = item_from_row(row)
+      self.assertEqual(item.id, '123')
       self.assertTrue(item.is_collection)
+
       print(item.serialize_RDF())
 
   def test_CSV(self):
@@ -57,13 +59,13 @@ class TestLoading(unittest.TestCase):
       self.assertEqual(len(csv.collections), 2)
 
   def test_relations(self):
-      row = {'subject': '12345', 'predicate': 'dcterms:type', 'object': '34352'}
+      row = {'subject': '12345', 'predicate': 'dc:type', 'object': '34352'}
       relation = relation_from_row(row)
-      self.assertEqual(relation.predicate, "http://purl.org/dc/terms/type")
+      self.assertEqual(relation.predicate, "http://purl.org/dc/elements/1.1/type")
 
-      row = {'subject': '12345', 'predicate': 'http://purl.org/dc/terms/type', 'object': '34352'}
+      row = {'subject': '12345', 'predicate': 'http://purl.org/dc/elements/1.1/type', 'object': '34352'}
       relation = relation_from_row(row)
-      self.assertEqual(relation.predicate, "http://purl.org/dc/terms/type")
+      self.assertEqual(relation.predicate, "http://purl.org/dc/elements/1.1/type")
       
   def test_relations_CSV(self):
       csv = CSVData(open('sample-data/relations.csv'))

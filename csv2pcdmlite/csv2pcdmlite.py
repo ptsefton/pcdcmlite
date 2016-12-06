@@ -51,7 +51,7 @@ def item_from_row(row):
 def populate_item_from_row(item, row):
     def _add_field(item, field, array):
         if field.repeats:
-            for v in field.value.split(","):
+            for v in field.value.split("|"):
                 new_field = copy.deepcopy(field)
                 new_field.value = v.strip()
                 array.append(new_field)
@@ -75,9 +75,9 @@ def populate_item_from_row(item, row):
                 # properties of the Item
                 # TODO - maybe make what's special configurable but
                 # these are good defaults
-                if f.qualified_name == "dcterms:title":
+                if f.qualified_name == "dc:title":
                     item.title = value
-                elif f.qualified_name == "dcterms:identifier":
+                elif f.qualified_name == "dc:identifier":
                     item.id = value
 
                 _add_field(item, f, item.text_fields)
@@ -103,7 +103,7 @@ class Field(object):
         self.qualified_name = None
         self.URI = None
         self.value = None
-        self.item_type_field = "dcterms:type" #TODO add a method to change
+        self.item_type_field = "dc:type" #TODO add a method to change
         self.collection_field = "pcdm:Collection"
         self.repeats = False
 
@@ -131,7 +131,7 @@ class Field(object):
                 self.namespace = Namespace(ns)
                 self.field_name = name
                 self.qualified_name = ':'.join([self.namespace.prefix, self.field_name])
-                self.URI = ":".join([self.namespace.URI, self.field_name]) if self.namespace.URI else self.qualified_name
+                self.URI = "".join([self.namespace.URI, self.field_name]) if self.namespace.URI else self.qualified_name
                 if self.qualified_name == self.item_type_field:
                     self.type = self.ITEM_TYPE
                     self.repeats = False
