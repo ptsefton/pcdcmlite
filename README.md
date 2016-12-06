@@ -43,8 +43,9 @@ Column Header        |      Description
 dc:identifier :  | Required, an ID unique to (at least) your data. TODO: code should assign an ID to the whole spreadsheet to create a unique namespace for these IDs
 dc:type           | What kind of resource this is. You could use a string or a URI.  If this row describes a collection put pdcdm:Collection
 pdcm:Collection      |Optional, the ID collection that *contains* this object or collection, this should appear in the dcterms:identifier column elsewhere in the data file
-dcterms:*term*       |  Any other Dublin Core Metatada
+dc:*meta*       |  Any other Dublin Core Metatada
 FILE:                       | Path for a file to upload
+REL:*predicate*     | Create an RDF relationship between this item or collection (the *subject*) and another using (prediate could be  a dublin core element like dc:subject, or a full URI), the row would contain the ID or URI of the *object*.
 
 To make relationships between existing items using a separate sheet
 you can use:
